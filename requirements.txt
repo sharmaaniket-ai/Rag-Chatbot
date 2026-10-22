@@ -7,3 +7,4 @@ pymupdf
 langchain-text-splitters
 langchain_huggingface
 python-dotenv
+langchain_chroma
