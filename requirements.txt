@@ -5,8 +5,5 @@ langchain_core
 langchain_groq
 pymupdf
 langchain-text-splitters
-sentence-transformers
 langchain_huggingface
-langchain_chroma
-chroma
 python-dotenv
