@@ -5,11 +5,10 @@ load_dotenv()
 import tempfile
 
 api=os.getenv("GROQ_KEY")
-hf=os.getenv("HF_KEY")
+os.environ["HF_KEY"] = os.getenv("HF_KEY")
 
 from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_huggingface import HuggingFaceEndpointEmbeddings
 from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
@@ -19,14 +18,9 @@ st.title("RAG PDF CHATBOT")
 st.divider()
 st.write("This is a chatbot that can answer questions about a PDF document using RAG techniques.")
 
-if not hf:
-    st.error("Set HF_KEY in your .env file to use Hugging Face embeddings.")
-    st.stop()
-
-embeddings = HuggingFaceEndpointEmbeddings(
-    model="sentence-transformers/all-MiniLM-L6-v2",
-    task="feature-extraction",
-    huggingfacehub_api_token=hf,
+from langchain_huggingface import HuggingFaceEmbeddings
+embeddings = HuggingFaceEmbeddings(
+    model="sentence-transformers/all-MiniLM-L6-v2"
 )
 prompt_template=ChatPromptTemplate.from_template("You are a helpful assistant that answers questions about a PDF document. Use the following context to answer the question: {context} Question: {question}")
 parser=StrOutputParser()
@@ -66,4 +60,5 @@ if uploaded_files:
     question=st.text_input("Ask a question about the PDF document")
     res=chain.invoke(question)
     st.write(res)
+    
 
